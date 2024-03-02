@@ -5,10 +5,10 @@ WORKDIR /app/
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --ignore-platform-reqs --optimize-autoloader
 
-FROM php:8.1-alpine
+FROM php:8.3-alpine
 
 # recommended: install optional extensions ext-ev and ext-sockets
-RUN apk --no-cache add ${PHPIZE_DEPS} libev \ 
+RUN apk --no-cache add ${PHPIZE_DEPS} linux-headers libev \ 
     && pecl install ev \
     && docker-php-ext-enable ev \
     && docker-php-ext-install sockets \
