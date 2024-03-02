@@ -13,13 +13,14 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
   mysql:
     image: mariadb:11
     restart: always
     healthcheck:
-      interval: 30s
-      retries: 3
+      interval: 1s
+      retries: 90
       test:
         [
           "CMD",
@@ -28,7 +29,7 @@ services:
           "--connect",
           "--innodb_initialized"
         ]
-      timeout: 30s
+      timeout: 90s
     volumes:
      - mysql_data:/var/lib/mysql
      - .docker/mariadb:/docker-entrypoint-initdb.d
